@@ -297,6 +297,8 @@ class Board(object):
                 self.find_legal_moves_dense(color)
             else:
                 self.find_legal_moves_sparse(color)
+               
+        self._legal_moves[color] = list(set(self._legal_moves[color]))
 
         return self._legal_moves[color]
 
