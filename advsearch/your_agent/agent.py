@@ -1,15 +1,12 @@
-import random
-import numpy as np
-import sys
 import math
-import copy
+import timeit
 from ..othello import board
 
 # Nao esqueca de renomear 'your_agent' com o nome
 # do seu agente.
 
 INFINITY = math.inf
-MAX_DEPTH = 5
+MAX_DEPTH = 4
 
 # the Static heuristic value for a player is calculated by adding together the weights of the 
 # squares in which the player’s coins are present. It can be used as evaluation or simply sort 
@@ -34,14 +31,6 @@ class GameState(object):
     def is_terminal(self) -> bool:  
         return self.depth >= MAX_DEPTH or self.board.is_terminal_state()
     
-    def sortAction(action):
-        return -STATIC_WEIGHTS[action[1], action[0]]
-
-    def possibleActionsSorted(self) -> list[tuple[int, int]]:
-        sortedActions = self.board.legal_moves(self.currColor)
-        sortedActions.sort(key=sortAction)
-        return sortedActions
-
     def evaluation(self) -> float:
         # Changes heuristic weights according to remaining number of moves
         if self.board.piece_count[self.board.EMPTY] >= 20:
@@ -59,13 +48,14 @@ class GameState(object):
         return heuristic
 
     def result(self, action: tuple[int, int]) -> object:
-        newBoard = copy.deepcopy(self.board)
+        newBoard = self.board.copy()
         newBoard.process_move(action, self.currColor)
         return GameState(newBoard, self.playerColor, self.depth+1, self.board.opponent(self.currColor))
 
     def succ(self) -> list:
-        succs = possibleActionsSorted(self)
-        return succs
+        sortByPosition = lambda x: -STATIC_WEIGHTS[x[1][1]][x[1][0]]
+        return sorted([(self.result(action), action) for action in self.board.legal_moves(self.currColor)], key=sortByPosition)
+        #return [(self.result(action), action) for action in self.board.legal_moves(self.currColor)]
 
     def mobilityHeuristic(self) -> int:
 
@@ -121,7 +111,8 @@ def max_value(state: GameState, alfa: float, beta: float) -> tuple[float, tuple[
     value = -INFINITY
     action = None
     for succState, succAction in state.succ():
-        value, action = max([(value, action), (min_value(succState, alfa, beta)[0], succAction)], key=lambda x:x[0]) # Refatorar esta Linha
+        succValue = min_value(succState, alfa, beta)[0]
+        value, action = max([(value, action), (succValue, succAction)], key=lambda x:x[0])
         alfa = max(alfa, value)
         if alfa >= beta: break
     return (alfa, action)
@@ -131,7 +122,8 @@ def min_value(state: GameState, alfa: float, beta: float) -> tuple[float, tuple[
     value = INFINITY
     action = None
     for succState, succAction in state.succ():
-        value, action = min([(value, action), (max_value(succState, alfa, beta)[0], succAction)], key=lambda x:x[0]) # Refatorar esta Linha
+        succValue = max_value(succState, alfa, beta)[0]
+        value, action = min([(value, action), (succValue, succAction)], key=lambda x:x[0])
         beta = min(beta, value)
         if beta <= alfa: break
     return (beta, action)
@@ -143,6 +135,8 @@ def make_move(board: board.Board, color: chr) -> tuple[int, int]:
     :param color: a character indicating the color to make the move ('B' or 'W')
     :return: tuple with x, y indexes of the move (remember: 0 is the first row/column)
     """
+    start = timeit.default_timer()
     value, action = max_value(GameState(board, color, 0, color), -INFINITY, INFINITY)
+    print("Tempo decorrido: {}s".format(round(timeit.default_timer() - start, 4)))
     return action if action else (-1,-1)
 
