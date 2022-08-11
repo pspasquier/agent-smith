@@ -1,4 +1,5 @@
 import random
+import numpy as np
 import sys
 import math
 import copy
@@ -33,6 +34,14 @@ class GameState(object):
     def is_terminal(self) -> bool:  
         return self.depth >= MAX_DEPTH or self.board.is_terminal_state()
     
+    def sortAction(action):
+        return -STATIC_WEIGHTS[action[1], action[0]]
+
+    def possibleActionsSorted(self) -> list[tuple[int, int]]:
+        sortedActions = self.board.legal_moves(self.currColor)
+        sortedActions.sort(key=sortAction)
+        return sortedActions
+
     def evaluation(self) -> float:
         # Changes heuristic weights according to remaining number of moves
         if self.board.piece_count[self.board.EMPTY] >= 20:
@@ -55,8 +64,8 @@ class GameState(object):
         return GameState(newBoard, self.playerColor, self.depth+1, self.board.opponent(self.currColor))
 
     def succ(self) -> list:
-        #Necessário ordenar os sucessores para melhorar a poda
-        return [(self.result(action), action) for action in self.board.legal_moves(self.currColor)]
+        succs = possibleActionsSorted(self)
+        return succs
 
     def mobilityHeuristic(self) -> int:
 
