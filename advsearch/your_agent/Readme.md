@@ -1,3 +1,15 @@
+# Trabalho Prático 2 - Othello
+## Alunos
+* 00326970 - Henrique Borges Manzke (turma A)
+* 00302923 - Philippe Silva Pasquier (turma A)
+* 00302213 - Filipe Ilunga Xindanhi (turma A)
+
+## Bibioletacas Adicionais
+Nenhuma biblioteca adicional foi necessária
+
+## Função de Avaliação
+Para a avaliação de um tabuleiro, utilizamos as heuristicas de Coin Parity, Mobility, Corners Captured e Static Weights. 
+
 ### Heurística CoinDifference
  - De acordo com o atual estado do tabuleiro, calcula a diferença de pontos entre o MAX e MIN, ela é mais eficiente no final do jogo, seguindo a fórmula abaixo:
 
@@ -42,9 +54,9 @@ else: cornersCapturedHeuristc = 0
 
 ### Pesos para as Heurística
 Com as Heurística já definidas, para avaliar um estado, cada heuristica tem um determinado peso com base na quantidade de peças do jogo.
->> Início/Meio[4-40]: 1Mobility + 40CornersCaptured + 1StaticWeights (Foco na mobilidade e bom posicionamento)
->> Meio/Fim [40-54]: 4Mobility + 3CoinParity + 40CornersCaptured + 4StaticWeights (Foco em cantos e moedas)
->> Fim [54-64]: 1CoinParity (Foco em ganhar o jogo)
+> Início/Meio[4-40]: 1Mobility + 40CornersCaptured + 1StaticWeights (Foco na mobilidade e bom posicionamento)
+> Meio/Fim [40-54]: 4Mobility + 3CoinParity + 40CornersCaptured + 4StaticWeights (Foco em cantos e moedas)
+> Fim [54-64]: 1CoinParity (Foco em ganhar o jogo)
 
 ## Condição de Parada
 Foi implementado uma poda Alfa-Beta com aprofundamento iterativo para encontrar a melhor jogada para o Agente. Inicialmente, o aprofundamento base é 3 ou 4 (depenendo da quantidade de peças do tabuleiro), porém enquanto tiver tempo restante (considerado os 5s base) a arvore continua incrementando em 1 sua profundidade. Então, a condição de parada é ou estado atual do tabueiro é um estado final ou a arvore atingiu a profundidade máxima naquele momento.
