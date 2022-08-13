@@ -13,16 +13,16 @@ Para a avaliação de um tabuleiro, utilizamos as heuristicas de Coin Parity, Mo
 ### Heurística CoinDifference
  - De acordo com o atual estado do tabuleiro, calcula a diferença de pontos entre o MAX e MIN, ela é mais eficiente no final do jogo, seguindo a fórmula abaixo:
 
-- `(maxPlayerCoins - minPlayerCoins) / (maxPlayerCoins + minPlayerCoins)`
+- `return (maxPlayerCoins - minPlayerCoins) / (maxPlayerCoins + minPlayerCoins)`
 
 
 ### Heurística Mobilidade 
 - Tenta obter a diferença entre o número de movimentos possíveis para o MAX e MIN, com o objetivo de restringir a mobilidade do MIN e aumentar a mobilidade do MAX. A heurística é calculada seguindo a fórmula abaixo: 
 
 ```
-if (maxPlayerMoves + minPlayerMoves )!= 0 :
-            mobilityHeuristic = (maxPlayerMoves - minPlayerMoves) / (maxPlayerMoves + minPlayerMoves)
-  else: mobilityHeuristic = 0
+    if maxPlayerMoves + minPlayerMoves != 0:
+        return (maxPlayerMoves - minPlayerMoves) / (maxPlayerMoves + minPlayerMoves)
+    return 0
   
 ```
 
@@ -30,9 +30,7 @@ if (maxPlayerMoves + minPlayerMoves )!= 0 :
 - Valoriza os cantos, pois eles são importantes para o desenvolvimento do jogo, uma vez capturados, não podem ser revertidos pelo adversário e permitem que o player construa moedas ao seu redor.
 
 ```
-if (maxPlayerMoves + minPlayerMoves ) != 0:
-    cornersCapturedHeuristc = (maxPlayerMoves - minPlayerMoves) / (maxPlayerMoves + minPlayerMoves)
-else: cornersCapturedHeuristc = 0 
+return (maxPlayerCorners - minAgentCorners) / 4
 
 ```
 
@@ -49,6 +47,10 @@ else: cornersCapturedHeuristc = 0
 [20, -5, 15, 3, 3, 15, -5, 20],
 [-20, -40, -5, -5, -5, -5, -40, -20]
 [120, -20, 20, 5, 5, 20, -20, 120]]
+
+if max_possible_sum != 0:
+    return (maxPlayerEval - minAgentEval) / max_possible_sum
+return 0
 
 ````
 
