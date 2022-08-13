@@ -28,7 +28,7 @@ class GameState(object):
         self.depth = depth
         self.currColor = currColor
 
-    def is_terminal(self) -> bool:  
+    def is_terminal(self) -> bool:
         return self.depth >= MAX_DEPTH or self.board.is_terminal_state()
     
     def evaluation(self) -> float:
@@ -47,15 +47,15 @@ class GameState(object):
             heuristic += self.staticWeightsHeuristic() * heuristicWeights[3]
         return heuristic
 
-    def result(self, action: tuple[int, int]) -> object:
+    def result(self, action: (int, int)) -> object:
         newBoard = self.board.copy()
         newBoard.process_move(action, self.currColor)
         return GameState(newBoard, self.playerColor, self.depth+1, self.board.opponent(self.currColor))
 
     def succ(self) -> list:
-        sortByPosition = lambda x: -STATIC_WEIGHTS[x[1][1]][x[1][0]]
-        return sorted([(self.result(action), action) for action in self.board.legal_moves(self.currColor)], key=sortByPosition)
-        #return [(self.result(action), action) for action in self.board.legal_moves(self.currColor)]
+        #sortByPosition = lambda x: -STATIC_WEIGHTS[x[1][1]][x[1][0]]
+        #return sorted([(self.result(action), action) for action in self.board.legal_moves(self.currColor)], key=sortByPosition)
+        return [(self.result(action), action) for action in self.board.legal_moves(self.currColor)]
 
     def mobilityHeuristic(self) -> int:
 
@@ -106,7 +106,7 @@ class GameState(object):
             return (maxPlayerEval - minAgentEval) / (maxPlayerEval + minAgentEval)
         return 0
 
-def max_value(state: GameState, alfa: float, beta: float) -> tuple[float, tuple[int, int]]:
+def max_value(state: GameState, alfa: float, beta: float) -> (float, (int, int)):
     if state.is_terminal(): return (state.evaluation(), None)
     value = -INFINITY
     action = None
@@ -117,7 +117,7 @@ def max_value(state: GameState, alfa: float, beta: float) -> tuple[float, tuple[
         if alfa >= beta: break
     return (alfa, action)
 
-def min_value(state: GameState, alfa: float, beta: float) -> tuple[float, tuple[int, int]]:
+def min_value(state: GameState, alfa: float, beta: float) -> (float, (int, int)):
     if state.is_terminal(): return (state.evaluation(), None)
     value = INFINITY
     action = None
@@ -128,7 +128,7 @@ def min_value(state: GameState, alfa: float, beta: float) -> tuple[float, tuple[
         if beta <= alfa: break
     return (beta, action)
 
-def make_move(board: board.Board, color: chr) -> tuple[int, int]:
+def make_move(board: board.Board, color: chr) -> (int, int):
     """
     Returns an Othello move
     :param board: a Board object with the current game state
