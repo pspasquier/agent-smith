@@ -35,8 +35,8 @@ return (maxPlayerCorners - minAgentCorners) / 4
 ```
 
  ### Heurística Pesos Estáticos
- - O valor da heurística é calculada somando os pesos dos quadrados em que o player possui moedas, cada posição do tabuleiro possui um peso, e está
- Heurística encoraja o player a capturar os cantos.
+ - O valor da heurística é calculado somando os pesos dos quadrados em que o player possui moedas, cada posição do tabuleiro possui um peso, e esta
+ heurística encoraja o player a capturar as coordenadas estratégicas e evitar as posições perigosas.
 
 ````
 [[120, -20, 20, 5, 5, 20, -20, 120]
@@ -53,6 +53,12 @@ if max_possible_sum != 0:
 return 0
 
 ````
+ ### Heurística De Estabilidade
+ - O valor da heuristica é calculado observando qual dos dois jogadores possuem mais moeadas estaveis nas bordas do mapa.
+````
+return (stable_coins[PLAYER_COLOR] - stable_coins[OPPONENT_COLOR]) / 28
+````
+
 
 ### Pesos para as Heurística
 Com as Heurística já definidas, para avaliar um estado, cada heuristica tem um determinado peso com base na quantidade de peças do jogo.
