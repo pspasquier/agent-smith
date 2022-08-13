@@ -21,7 +21,7 @@ STATIC_WEIGHTS = [[120, -20, 20,  5,  5, 20, -20, 120],
                   [ 20,  -5, 15,  3,  3, 15,  -5,  20],
                   [-20, -40, -5, -5, -5, -5, -40, -20],
                   [120, -20, 20,  5,  5, 20, -20, 120]]
-
+'''
 def stabilityHeuristic2(board: board.Board) -> float:
 
     stable_coins = {'W': 0, 'B' : 0}
@@ -131,8 +131,7 @@ def stabilityHeuristic2(board: board.Board) -> float:
                     [E, E, E, E, E, E, E, E],
                     [corner3] + stable34 + [corner4]]
     return (stable_coins[PLAYER_COLOR] - stable_coins[OPPONENT_COLOR]) / 28
-
-
+'''
 
 def mobilityHeuristic(board: board.Board) -> float:
 
