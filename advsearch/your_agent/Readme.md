@@ -20,7 +20,7 @@ if (maxPlayerMoves + minPlayerMoves )!= 0 :
 ```
 if (maxPlayerMoves + minPlayerMoves ) != 0:
     cornersCapturedHeuristc = (maxPlayerMoves - minPlayerMoves) / (maxPlayerMoves + minPlayerMoves)
-    else: cornersCapturedHeuristc = 0 
+else: cornersCapturedHeuristc = 0 
 
 ```
 
