@@ -4,6 +4,8 @@
 * 00302923 - Philippe Silva Pasquier (turma A)
 * 00302213 - Filipe Ilunga Xindanhi (turma A)
 
+Um dos nossos colegas deu push force sem querer e a gente precisou refazer o readme do agente, por favor, perdoa agente.
+
 ## Bibioletacas Adicionais
 Nenhuma biblioteca adicional foi necessária
 
